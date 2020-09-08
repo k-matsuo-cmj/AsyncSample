@@ -66,7 +66,9 @@ class MainActivity : AppCompatActivity() {
             //可変長引数の1個目（インデックス0）を取得 都市ID
             val id = params[0]
             //都市IDを使って接続URL文字列を作成
-            val urlStr = "http://api.openweathermap.org/data/2.5/weather?id=${id}&appid=d39ea7125d68572e6774654e57b6bc12"
+            val apiKey = resources.getString(R.string.openweathermap_api_key)
+            val urlStr = "http://api.openweathermap.org/data/2.5/weather" +
+                "?id=${id}&lang=ja&units=metric&appid=${apiKey}"
 
             //URLオブジェクトを生成
             val url = URL(urlStr)
@@ -103,12 +105,13 @@ class MainActivity : AppCompatActivity() {
             val forecastNow = forecasts.getJSONObject(0)
             //「forecasts」ひとつ目のJSONオブジェクトから「telop」文字列（天気）を取得
             val telop = forecastNow.getString("main")
+            val desc = forecastNow.getString("description")
 
             //天気情報用文字列をTextViewにセット
             val tvWeatherTelop = findViewById<TextView>(R.id.tvWeatherTelop)
             val tvWeatherDesc = findViewById<TextView>(R.id.tvWeatherDesc)
             tvWeatherTelop.text = telop
-            tvWeatherDesc.text = ""
+            tvWeatherDesc.text = desc
 
         }
 
