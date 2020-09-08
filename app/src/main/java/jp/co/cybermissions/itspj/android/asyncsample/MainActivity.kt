@@ -26,9 +26,9 @@ class MainActivity : AppCompatActivity() {
         //SimpleAdapterで使用するMutableListオブジェクトを用意
         val cityList: MutableList<MutableMap<String, String>> = mutableListOf()
         //都市データを格納するMutableMapオブジェクトの用意とcityListへのデータ登録
-        var city = mutableMapOf("name" to "大阪", "id" to "270000")
+        var city = mutableMapOf("name" to "大阪", "id" to "1853908")
         cityList.add(city)
-        city = mutableMapOf("name" to "神戸", "id" to "280010")
+        city = mutableMapOf("name" to "神戸", "id" to "1859171")
         cityList.add(city)
 
         //SimpleAdapterで使用するfrom-to用変数の用意
@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             //可変長引数の1個目（インデックス0）を取得 都市ID
             val id = params[0]
             //都市IDを使って接続URL文字列を作成
-            val urlStr = "http://weather.livedoor.com/forecast/webservice/json/v1?city=${id}"
+            val urlStr = "http://api.openweathermap.org/data/2.5/weather?id=${id}&appid=d39ea7125d68572e6774654e57b6bc12"
 
             //URLオブジェクトを生成
             val url = URL(urlStr)
@@ -93,22 +93,22 @@ class MainActivity : AppCompatActivity() {
             //JSON文字列からJSONObjectオブジェクトを生成
             //これをルートJSONオブジェクトとする
             val rootJSON = JSONObject(result)
-            //ルートJSON直下の「description」JSONオブジェクトを取得
-            val descriptionJSON = rootJSON.getJSONObject("description")
-            //「description」プロパティ直下の「text」文字列（天気概況文）を取得
-            val desc = descriptionJSON.getString("text")
+//            //ルートJSON直下の「description」JSONオブジェクトを取得
+//            val descriptionJSON = rootJSON.getJSONObject("description")
+//            //「description」プロパティ直下の「text」文字列（天気概況文）を取得
+//            val desc = descriptionJSON.getString("text")
             //ルートJSON直下の「forecasts」JSON配列を取得
-            val forecasts = rootJSON.getJSONArray("forecasts")
+            val forecasts = rootJSON.getJSONArray("weather")
             //「forecasts」JSON配列のひとつ目のJSONオブジェクトを取得
             val forecastNow = forecasts.getJSONObject(0)
             //「forecasts」ひとつ目のJSONオブジェクトから「telop」文字列（天気）を取得
-            val telop = forecastNow.getString("telop")
+            val telop = forecastNow.getString("main")
 
             //天気情報用文字列をTextViewにセット
             val tvWeatherTelop = findViewById<TextView>(R.id.tvWeatherTelop)
-            val tvWeatherDesc =findViewById<TextView>(R.id.tvWeatherDesc)
+            val tvWeatherDesc = findViewById<TextView>(R.id.tvWeatherDesc)
             tvWeatherTelop.text = telop
-            tvWeatherDesc.text = desc
+            tvWeatherDesc.text = ""
 
         }
 
